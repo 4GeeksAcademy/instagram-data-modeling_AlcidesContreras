@@ -4,6 +4,7 @@ from sqlalchemy import Column, ForeignKey, Integer, String, Enum
 from sqlalchemy.orm import relationship, declarative_base
 from sqlalchemy import create_engine
 from eralchemy2 import render_er
+import enum
 
 Base = declarative_base()
 
@@ -41,20 +42,21 @@ class Comment(Base):
     comment_text = Column(String(300), nullable=False)
     author_id = Column(Integer, ForeignKey('user.id'))
     post_id = Column(Integer, ForeignKey('post.id'))            
-    
+
+
+class MyEnum(enum.Enum):
+    Imagenes = 1
+    Audio = 2
+    Videos = 3
 
 
 class Media(Base):
     __tablename__ = 'Media'
     id = Column(Integer, primary_key=True)
-    type = Column(String(50), nullable=False)
+    type = Column(Enum(MyEnum))
     url = Column(String(250), nullable=False)
     post_id = Column(Integer, ForeignKey('post.id'))
   
-
-
-    def to_dict(self):
-        return {}
 
 ## Draw from SQLAlchemy base
 try:
